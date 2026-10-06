@@ -6,6 +6,7 @@
 constexpr double pi = std::numbers::pi;
 
 //Interval: 0 <= x <= 1
+//Doubling n reduces max error by ~75%
 constexpr int n = 11;
 constexpr double lower_limit = 0.0;
 constexpr double upper_limit = 1.0;
@@ -47,29 +48,43 @@ int main() {
     	values[i] = u(x[i]);
     	std::cout << "u(x) = " << values[i] << std::endl;
     }
+    
+    std::cout << std::endl;
+    std::cout << "Calculating First Derivative" << std::endl;
 
     std::vector<double> d1(n), exact_d1(n);
+    double max_error = 0.0;
     for (int i = 1; i < n - 1; i++) {
     	exact_d1[i] = exact_first_derivative(x[i]);
     	d1[i] = (values[i+1] - values[i-1])
     		/ (2.0 * dx);
+    	double error = std::abs(d1[i]- exact_d1[i]);
+    	if (error > max_error) max_error = error;
     	std::cout << "x = " << x[i]
     		<< " u'(x) = " << d1[i]
     		<< " exact u'(x) " << exact_d1[i]
-    		<< " error = " << std::abs(d1[i]- exact_d1[i])
+    		<< " error = " << error
     		<< std::endl;
     }
+    std::cout << "Max Error = " << max_error << std::endl;
 
+    std::cout << std::endl;
+	std::cout << "Calculating Second Derivative" << std::endl;
+    
     std::vector<double> d2(n), exact_d2(n);
+    max_error = 0.0;
     for (int i = 1; i < n - 1; i++) {
     	exact_d2[i] = exact_second_derivative(x[i]);
     	d2[i] = (values[i+1] - 2.0 * values[i] + values[i-1])
     		/ (dx * dx);
+    	double error = std::abs(d2[i]- exact_d2[i]);
+    	if (error > max_error) max_error = error;
     	std::cout << "x = " << x[i]
     	    	<< " u''(x) = " << d2[i]
     	    	<< " exact u''(x) " << exact_d2[i]
-    	    	<< " error = " << std::abs(d2[i]- exact_d2[i])
+    	    	<< " error = " << error
     	    	<< std::endl;
     }
+    std::cout << "Max Error = " << max_error << std::endl;
     
 }
