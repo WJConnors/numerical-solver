@@ -50,7 +50,7 @@ int main() {
 	    double max_error = 0.0;
 	    for (int i = 1; i < n - 1; i++) {
 	    	exact_d1[i] = exact_first_derivative(x[i]);
-	    	d1[i] = finite_difference::first_derivative(
+	    	d1[i] = finite_difference_first_derivative(
 	    		values[i-1],
 	    		values[i+1],
 	    		dx
@@ -72,7 +72,7 @@ int main() {
 	    max_error = 0.0;
 	    for (int i = 1; i < n - 1; i++) {
 	    	exact_d2[i] = exact_second_derivative(x[i]);
-	    	d2[i] = finite_difference::second_derivative(
+	    	d2[i] = finite_difference_second_derivative(
 	    		values[i-1],
 	    		values[i],
 	    		values[i+1],

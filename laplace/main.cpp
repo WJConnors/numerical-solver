@@ -33,8 +33,8 @@ double five_point_laplacian(
 	double y_next,
 	double d
 ) {
-	return finite_difference::second_derivative(x_prev, centre, x_next, d)
-		+ finite_difference::second_derivative(y_prev, centre, y_next, d);
+	return finite_difference_second_derivative(x_prev, centre, x_next, d)
+		+ finite_difference_second_derivative(y_prev, centre, y_next, d);
 }
 
 int main() {
