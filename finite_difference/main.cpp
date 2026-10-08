@@ -2,13 +2,12 @@
 #include <cmath>
 #include <numbers>
 #include <vector>
-#include <array>
 
 constexpr double pi = std::numbers::pi;
 
 //Interval: 0 <= x <= 1
 //Doubling n reduces max error by ~75%
-constexpr std::array<int, 4> ns{11, 21, 41, 81};
+constexpr int ns[] = {11, 21, 41, 81};
 constexpr double lower_limit = 0.0;
 constexpr double upper_limit = 1.0;
 
@@ -26,37 +25,24 @@ double exact_second_derivative(double x) {
 }
 
 int main() {
-    /*std::cout << "u(0) = " << u(0) << std::endl;
-    std::cout << "u(0.5) = " << u(0.5) << std::endl;
-    std::cout << "u(1) = " << u(1) << std::endl;
-
-    std::cout << "u'(0) = " << exact_first_derivative(0) << std::endl;
-    std::cout << "u'(0.5) = " << exact_first_derivative(0.5) << std::endl;
-    std::cout << "u'(1) = " << exact_first_derivative(1) << std::endl;
-
-    std::cout << "u''(0) = " << exact_second_derivative(0) << std::endl;
-    std::cout << "u''(0.5) = " << exact_second_derivative(0.5) << std::endl;
-    std::cout << "u''(1) = " << exact_second_derivative(1) << std::endl;*/
-
-	
 	for (int n : ns) {
 
 		std::vector<double> x(n), values(n);
 		double dx = (upper_limit - lower_limit) / (n - 1);
 
-		std::cout << std::endl << "n = " << n << " dx = " << dx << std::endl;
+		std::cout << '\n' << "n = " << n << " dx = " << dx << '\n';
 
 
-	    //std::cout << "Original Values" << std::endl;
+	    //std::cout << "Original Values" << '\n';
 	    for (int i = 0; i < n; i++) {
 	    	x[i] = lower_limit + i * dx;
-	    	//std::cout << "x = " << x[i] << std::endl;
+	    	//std::cout << "x = " << x[i] << '\n';
 	    	values[i] = u(x[i]);
-	    	//std::cout << "u(x) = " << values[i] << std::endl;
+	    	//std::cout << "u(x) = " << values[i] << '\n';
 	    }
 	    
 	    //std::cout << std::endl;
-	    std::cout << "Calculating First Derivative" << std::endl;
+	    std::cout << "Calculating First Derivative" << '\n';
 
 	    std::vector<double> d1(n), exact_d1(n);
 	    double max_error = 0.0;
@@ -70,12 +56,12 @@ int main() {
 	    		<< " u'(x) = " << d1[i]
 	    		<< " exact u'(x) " << exact_d1[i]
 	    		<< " error = " << error
-	    		<< std::endl;*/
+	    		<< '\n';*/
 	    }
-	    std::cout << "Max Error = " << max_error << std::endl;
+	    std::cout << "Max Error = " << max_error << '\n';
 
-	    std::cout << std::endl;
-		std::cout << "Calculating Second Derivative" << std::endl;
+	    std::cout << '\n';
+		std::cout << "Calculating Second Derivative" << '\n';
 	    
 	    std::vector<double> d2(n), exact_d2(n);
 	    max_error = 0.0;
@@ -89,9 +75,9 @@ int main() {
 	    	    	<< " u''(x) = " << d2[i]
 	    	    	<< " exact u''(x) " << exact_d2[i]
 	    	    	<< " error = " << error
-	    	    	<< std::endl;*/
+	    	    	<< '\n';*/
 	    }
-	    std::cout << "Max Error = " << max_error << std::endl;
+	    std::cout << "Max Error = " << max_error << '\n';
     }
     
 }
