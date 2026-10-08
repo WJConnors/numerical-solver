@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "grid2d.hpp"
+#include "finite_difference.hpp"
 
 constexpr double pi = std::numbers::pi;
 
@@ -24,20 +25,62 @@ double exact_laplacian(double x, double y) {
 	return -2 * pi * pi * exact_solution(x, y);
 }
 
+double five_point_laplacian(
+	double centre,
+	double x_prev,
+	double x_next,
+	double y_prev,
+	double y_next,
+	double d
+) {
+	return finite_difference::second_derivative(x_prev, centre, x_next, d)
+		+ finite_difference::second_derivative(y_prev, centre, y_next, d);
+}
+
 int main() {
 
-	int n = ns[0];
-	
-	double d = (max - min) / (n -1);
+	for (int n : ns) {
+		std::cout << "n = " << n << '\n';
+		
+		double d = (max - min) / (n -1);
 
-	Grid2D grid = make_grid2d(n, n);
+		Grid2D values = make_grid2d(n, n);
 
-	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
-			grid(x, y) = exact_solution(
-				min + x * d,
-				min + y * d
-			);
+			for (int x = 0; x < n; x++) {
+				values(x, y) = exact_solution(
+					min + x * d,
+					min + y * d
+				);
+				
+			}
 		}
-	}	
+
+		Grid2D fp_laplacian_grid = make_grid2d(n, n);
+
+		double max_error = 0.0;
+
+		for (int y = 1; y < n - 1; y++) {
+			for (int x = 1; x < n - 1; x++) {
+				double exact = exact_laplacian(
+					min + x * d,
+					min + y * d
+				);
+				
+				fp_laplacian_grid(x, y) = five_point_laplacian(
+					values(x, y),
+					values(x - 1, y),
+					values(x + 1, y),
+					values(x, y - 1),
+					values(x, y + 1),
+					d
+				);
+
+				double error = std::abs(fp_laplacian_grid(x, y) - exact);
+				if (error > max_error) max_error = error;
+			}
+		}
+
+		std::cout << "Max Error = " << max_error << "\n\n";
+	}
 }

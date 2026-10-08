@@ -3,6 +3,8 @@
 #include <numbers>
 #include <vector>
 
+#include "finite_difference.hpp"
+
 constexpr double pi = std::numbers::pi;
 
 //Interval: 0 <= x <= 1
@@ -48,8 +50,11 @@ int main() {
 	    double max_error = 0.0;
 	    for (int i = 1; i < n - 1; i++) {
 	    	exact_d1[i] = exact_first_derivative(x[i]);
-	    	d1[i] = (values[i+1] - values[i-1])
-	    		/ (2.0 * dx);
+	    	d1[i] = finite_difference::first_derivative(
+	    		values[i-1],
+	    		values[i+1],
+	    		dx
+	    	);
 	    	double error = std::abs(d1[i]- exact_d1[i]);
 	    	if (error > max_error) max_error = error;
 	    	/*std::cout << "x = " << x[i]
@@ -67,8 +72,12 @@ int main() {
 	    max_error = 0.0;
 	    for (int i = 1; i < n - 1; i++) {
 	    	exact_d2[i] = exact_second_derivative(x[i]);
-	    	d2[i] = (values[i+1] - 2.0 * values[i] + values[i-1])
-	    		/ (dx * dx);
+	    	d2[i] = finite_difference::second_derivative(
+	    		values[i-1],
+	    		values[i],
+	    		values[i+1],
+	    		dx
+	    	);
 	    	double error = std::abs(d2[i]- exact_d2[i]);
 	    	if (error > max_error) max_error = error;
 	    	/*std::cout << "x = " << x[i]
