@@ -42,7 +42,7 @@ int main() {
 	for (int n : ns) {
 		std::cout << "n = " << n << '\n';
 		
-		double d = (max - min) / (n -1);
+		double d = (max - min) / (n -1 );
 
 		Grid2D values = make_grid2d(n, n);
 
