@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "grid2d.hpp"
+#include "finite_difference.hpp"
 
 constexpr double pi = std::numbers::pi;
 
@@ -11,8 +12,8 @@ constexpr double min = 0.0;
 constexpr double max = 1.0;
 constexpr int n = 17;
 
-constexpr double tolerance = 1e-8;
 constexpr int max_iterations = 1000000;
+constexpr double residual_tolerance = 1e-8;
 
 //To be used for final verification, assuming u is unknown otherwise
 //u(x,y) = sin(pi.x).sin(pi.y)
@@ -42,7 +43,6 @@ int main() {
 	Grid2D u_new = make_grid2d(n, n);
 	//Jacobi iteration
 	for (int i = 0; i < max_iterations; i++) {
-		double max_change = 0.0;
 		std::swap(u_old, u_new);
 		for (int y = 1; y < n - 1; y++) {
 			for (int x = 1; x < n - 1; x++) {
@@ -53,13 +53,25 @@ int main() {
 					u_old(x, y - 1) -
 					d * d * f(x, y))
 					/ 4.0;
-
-				double change = std::abs(u_new(x, y) - u_old(x, y));
-				if (change > max_change) max_change = change;
 			}
 		}
-		if (max_change < tolerance) {
-			std::cout << "Converged after " << i + 1 << " iterations\n";
+		double max_residual = 0.0;
+		for (int y = 1; y < n - 1; y++) {
+			for (int x = 1; x < n - 1; x++) {
+				double laplacian = five_point_laplacian(
+					u_new(x, y),
+					u_new(x - 1, y),
+					u_new(x + 1, y),
+					u_new(x, y - 1),
+					u_new(x, y + 1),
+					d	
+				);
+				double residual = std::abs(f(x, y) - laplacian);
+				if (residual > max_residual) max_residual = residual;
+			}
+		}
+		if (max_residual < residual_tolerance) {
+			std::cout << "Residual " << max_residual << " reached after " << i + 1 << " iterations\n";
 			break;
 		}
 	}
@@ -77,6 +89,6 @@ int main() {
 		}
 	}
 
-	std::cout << max_error << '\n';
+	std::cout << "Max error: " << max_error << '\n';
 	
 }

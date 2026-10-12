@@ -25,18 +25,6 @@ double exact_laplacian(double x, double y) {
 	return -2 * pi * pi * exact_solution(x, y);
 }
 
-double five_point_laplacian(
-	double centre,
-	double x_prev,
-	double x_next,
-	double y_prev,
-	double y_next,
-	double d
-) {
-	return finite_difference_second_derivative(x_prev, centre, x_next, d)
-		+ finite_difference_second_derivative(y_prev, centre, y_next, d);
-}
-
 int main() {
 
 	for (int n : ns) {
