@@ -1,0 +1,107 @@
+Results from work laptop
+
+PS C:\Users\ConnorsB1\git\repos\personal\numerical-solver> .\build-release\poisson\poisson.exe
+
+n = 17
+Residual 9.83948e-09 reached after 1104 iterations
+Max error: 0.00321896
+Time: 0.003367 s
+
+n = 33
+Residual 9.95998e-09 reached after 4435 iterations
+Max error: 0.000803577
+Time: 0.0123561 s
+
+n = 65
+Residual 9.99159e-09 reached after 17759 iterations
+Max error: 0.000200821
+Time: 0.191305 s
+
+n = 129
+Residual 9.99979e-09 reached after 71060 iterations
+Max error: 5.02004e-05
+Time: 3.07491 s
+PS C:\Users\ConnorsB1\git\repos\personal\numerical-solver> .\build-release\poisson\poisson.exe
+
+n = 17
+Residual 9.83948e-09 reached after 1104 iterations
+Max error: 0.00321896
+Time: 0.0011376 s
+
+n = 33
+Residual 9.95998e-09 reached after 4435 iterations
+Max error: 0.000803577
+Time: 0.0119713 s
+
+n = 65
+Residual 9.99159e-09 reached after 17759 iterations
+Max error: 0.000200821
+Time: 0.187212 s
+
+n = 129
+Residual 9.99979e-09 reached after 71060 iterations
+Max error: 5.02004e-05
+Time: 3.02631 s
+PS C:\Users\ConnorsB1\git\repos\personal\numerical-solver> .\build-release\poisson\poisson.exe
+
+n = 17
+Residual 9.83948e-09 reached after 1104 iterations
+Max error: 0.00321896
+Time: 0.0011629 s
+
+n = 33
+Residual 9.95998e-09 reached after 4435 iterations
+Max error: 0.000803577
+Time: 0.0119353 s
+
+n = 65
+Residual 9.99159e-09 reached after 17759 iterations
+Max error: 0.000200821
+Time: 0.185387 s
+
+n = 129
+Residual 9.99979e-09 reached after 71060 iterations
+Max error: 5.02004e-05
+Time: 3.01603 s
+PS C:\Users\ConnorsB1\git\repos\personal\numerical-solver> .\build-release\poisson\poisson.exe
+
+n = 17
+Residual 9.83948e-09 reached after 1104 iterations
+Max error: 0.00321896
+Time: 0.0010761 s
+
+n = 33
+Residual 9.95998e-09 reached after 4435 iterations
+Max error: 0.000803577
+Time: 0.0119892 s
+
+n = 65
+Residual 9.99159e-09 reached after 17759 iterations
+Max error: 0.000200821
+Time: 0.189174 s
+
+n = 129
+Residual 9.99979e-09 reached after 71060 iterations
+Max error: 5.02004e-05
+Time: 3.01116 s
+PS C:\Users\ConnorsB1\git\repos\personal\numerical-solver> .\build-release\poisson\poisson.exe
+
+n = 17
+Residual 9.83948e-09 reached after 1104 iterations
+Max error: 0.00321896
+Time: 0.0011261 s
+
+n = 33
+Residual 9.95998e-09 reached after 4435 iterations
+Max error: 0.000803577
+Time: 0.0122439 s
+
+n = 65
+Residual 9.99159e-09 reached after 17759 iterations
+Max error: 0.000200821
+Time: 0.187812 s
+
+n = 129
+Residual 9.99979e-09 reached after 71060 iterations
+Max error: 5.02004e-05
+Time: 3.0958 s

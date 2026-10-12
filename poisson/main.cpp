@@ -2,6 +2,7 @@
 #include <numbers>
 #include <cmath>
 #include <utility>
+#include <chrono>
 
 #include "grid2d.hpp"
 #include "finite_difference.hpp"
@@ -29,6 +30,7 @@ double exact_laplacian(double x, double y) {
 
 int main() {
 	for (int n : ns) {
+		auto start = std::chrono::steady_clock::now();
 		std::cout << "\nn = " << n << '\n';
 		double d = (max - min) / (n - 1);
 		Grid2D f = make_grid2d(n, n);
@@ -92,6 +94,9 @@ int main() {
 		}
 
 		std::cout << "Max error: " << max_error << '\n';
+		auto end = std::chrono::steady_clock::now();
+		double elapsed = std::chrono::duration<double>(end - start).count();
+		std::cout << "Time: " << elapsed << " s\n";
 	}
 	
 }
