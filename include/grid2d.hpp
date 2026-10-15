@@ -9,7 +9,11 @@ struct Grid2D {
 
 	double& operator()(int x, int y) {
 		return values[y * nx + x];
-	}	
+	}
+
+	const double& operator()(int x, int y) const {
+		return values[y * nx + x];
+	}
 };
 
 inline Grid2D make_grid2d(int nx, int ny) {
