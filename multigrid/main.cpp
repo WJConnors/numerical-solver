@@ -5,6 +5,20 @@
 constexpr int fine = 65;
 constexpr int coarse = 33;
 
+constexpr double min = 0.0;
+constexpr double max = 1.0;
+
+//To be used for final verification, assuming u is unknown otherwise
+//u(x,y) = sin(pi.x).sin(pi.y)
+double exact_solution(double x, double y) {
+	return std::sin(pi * x) * std::sin(pi * y);
+}
+//Laplacian
+// f(x,y) = -2.pi^2.sin(pi.x).sin(pi.y)
+double exact_laplacian(double x, double y) {
+	return -2 * pi * pi * exact_solution(x, y);
+}
+
 bool is_even(int i) {
 	return i % 2 == 0;
 }
