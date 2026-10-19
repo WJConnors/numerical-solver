@@ -81,5 +81,17 @@ void prolong(const Grid2D& coarse_grid, Grid2D& fine_grid) {
 }
 
 int main() {
-	std::cout << "Hello, multigrid\n";
+	double d = (max - min) / (fine - 1);
+	Grid2D f = make_grid2d(fine, fine);
+	for (int y = 0; y < fine; y++) {
+		for (int x = 0; x < fine; x++) {
+			f(x, y) = exact_laplacian(
+				min + x * d,
+				min + y * d	
+			);
+		}
+	}
+
+	Grid2D u_old = make_grid2d(fine, fine);
+	Grid2D u_new = make_grid2d(fine, fine);
 }
