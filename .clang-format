@@ -1,0 +1,19 @@
+BasedOnStyle: LLVM
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+
+ColumnLimit: 80
+
+PackParameters:
+  BinPack: OnePerLine
+
+PackArguments:
+  BinPack: OnePerLine
+
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+
+BreakAfterOpenBracketFunction: true
+BreakBeforeCloseBracketFunction: true
