@@ -1,0 +1,123 @@
+100 weighted jacobi sweeps per cycle
+
+Cycle: 1
+Initial cycle max residual: 19.7392
+After pre-smoothing max residual: 19.6917
+After coarse correction max residual: 19.6443
+After post-smoothing max residual: 14.4182
+
+Cycle: 2
+Initial cycle max residual: 14.4182
+After pre-smoothing max residual: 14.2108
+After coarse correction max residual: 14.1914
+After post-smoothing max residual: 10.4108
+
+Cycle: 3
+Initial cycle max residual: 10.4108
+After pre-smoothing max residual: 10.2608
+After coarse correction max residual: 10.2468
+After post-smoothing max residual: 7.51707
+
+Cycle: 4
+Initial cycle max residual: 7.51707
+After pre-smoothing max residual: 7.40876
+After coarse correction max residual: 7.39866
+After post-smoothing max residual: 5.42765
+
+Cycle: 5
+Initial cycle max residual: 5.42765
+After pre-smoothing max residual: 5.34945
+After coarse correction max residual: 5.34215
+After post-smoothing max residual: 3.919
+
+Cycle: 6
+Initial cycle max residual: 3.919
+After pre-smoothing max residual: 3.86253
+After coarse correction max residual: 3.85727
+After post-smoothing max residual: 2.82969
+
+Cycle: 7
+Initial cycle max residual: 2.82969
+After pre-smoothing max residual: 2.78892
+After coarse correction max residual: 2.78511
+After post-smoothing max residual: 2.04316
+
+Cycle: 8
+Initial cycle max residual: 2.04316
+After pre-smoothing max residual: 2.01372
+After coarse correction max residual: 2.01097
+After post-smoothing max residual: 1.47525
+
+Cycle: 9
+Initial cycle max residual: 1.47525
+After pre-smoothing max residual: 1.45399
+After coarse correction max residual: 1.45201
+After post-smoothing max residual: 1.06519
+
+Cycle: 10
+Initial cycle max residual: 1.06519
+After pre-smoothing max residual: 1.04985
+After coarse correction max residual: 1.04841
+After post-smoothing max residual: 0.769116
+
+1000 Weighted jacobi sweeps per cycle
+
+Cycle: 1
+Initial cycle max residual: 19.7392
+After pre-smoothing max residual: 19.6917
+After coarse correction max residual: 19.6443
+After post-smoothing max residual: 1.51855
+
+Cycle: 2
+Initial cycle max residual: 1.51855
+After pre-smoothing max residual: 0.844461
+After coarse correction max residual: 0.844461
+After post-smoothing max residual: 0.0642549
+
+Cycle: 3
+Initial cycle max residual: 0.0642549
+After pre-smoothing max residual: 0.0352418
+After coarse correction max residual: 0.0352418
+After post-smoothing max residual: 0.0026802
+
+Cycle: 4
+Initial cycle max residual: 0.0026802
+After pre-smoothing max residual: 0.00146935
+After coarse correction max residual: 0.00146935
+After post-smoothing max residual: 0.000111745
+
+Cycle: 5
+Initial cycle max residual: 0.000111745
+After pre-smoothing max residual: 6.12603e-05
+After coarse correction max residual: 6.12603e-05
+After post-smoothing max residual: 4.65887e-06
+
+Cycle: 6
+Initial cycle max residual: 4.65887e-06
+After pre-smoothing max residual: 2.55407e-06
+After coarse correction max residual: 2.55407e-06
+After post-smoothing max residual: 1.9424e-07
+
+Cycle: 7
+Initial cycle max residual: 1.9424e-07
+After pre-smoothing max residual: 1.06486e-07
+After coarse correction max residual: 1.06486e-07
+After post-smoothing max residual: 8.09966e-09
+
+Cycle: 8
+Initial cycle max residual: 8.09966e-09
+After pre-smoothing max residual: 4.44258e-09
+After coarse correction max residual: 4.44258e-09
+After post-smoothing max residual: 3.3803e-10
+
+Cycle: 9
+Initial cycle max residual: 3.3803e-10
+After pre-smoothing max residual: 1.85235e-10
+After coarse correction max residual: 1.85235e-10
+After post-smoothing max residual: 1.60689e-11
+
+Cycle: 10
+Initial cycle max residual: 1.60689e-11
+After pre-smoothing max residual: 9.79128e-12
+After coarse correction max residual: 1.06972e-11
+After post-smoothing max residual: 4.45155e-12
