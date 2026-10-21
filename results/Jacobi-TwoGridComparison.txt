@@ -1,0 +1,21 @@
+Comparing weighted Jacobi and Two grid, each cycle is 100 runs of weighted jacobi
+
+Cycle: 1
+Max Residual two grid: 14.4182
+Max Residual jacobi: 18.2155
+
+Cycle: 2
+Max Residual two grid: 10.4108
+Max Residual jacobi: 16.8094
+
+Cycle: 3
+Max Residual two grid: 7.51707
+Max Residual jacobi: 15.5118
+
+Cycle: 4
+Max Residual two grid: 5.42765
+Max Residual jacobi: 14.3144
+
+Cycle: 5
+Max Residual two grid: 3.919
+Max Residual jacobi: 13.2094

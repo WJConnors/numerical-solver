@@ -136,6 +136,10 @@ void two_grid_cycle(Grid2D &u_new, const Grid2D &f, double fine_d) {
 	for (int i = 0; i < 3; i++) {
 		weighted_jacobi(u_old, u_new, f, fine_d);
 	}
+
+	calculate_residual(u_new, f, fine_residual, fine_d);
+	std::cout << "Max Residual two grid: " << abs_max_grid_value(fine_residual) << '\n';
+
 }
 
 int main() {
@@ -148,5 +152,17 @@ int main() {
 	}
 
 	Grid2D u = make_grid2d(fine, fine);
-	two_grid_cycle(u, f, fine_d);
+	Grid2D j_new = make_grid2d(fine, fine);
+	Grid2D j_old = make_grid2d(fine, fine);
+	Grid2D j_res = make_grid2d(fine, fine);
+	for (int i = 0; i < 5; i++) {
+	    std::cout << "\nCycle: " << i+1 << '\n';
+		two_grid_cycle(u, f, fine_d);
+
+		for (int i = 0; i < 100; i++) {
+			weighted_jacobi(j_old, j_new, f, fine_d);
+		}
+		calculate_residual(j_new, f, j_res, fine_d);
+		std::cout << "Max Residual jacobi: " << abs_max_grid_value(j_res) << '\n';
+	}
 }
