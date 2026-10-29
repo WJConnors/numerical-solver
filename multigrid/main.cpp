@@ -10,8 +10,8 @@
 
 constexpr double pi = std::numbers::pi;
 
-// Grid hierarchy: 65, 33, 17, 9, 5, 3
-constexpr int finest = 65;
+// Grid hierarchy: 3, 5, 9, 17, 33, 65, 129 etc..
+constexpr int finest = 129;
 
 constexpr double min = 0.0;
 constexpr double max = 1.0;
