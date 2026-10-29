@@ -1,4 +1,6 @@
+#include <chrono>
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <numbers>
 #include <utility>
@@ -8,12 +10,15 @@
 
 constexpr double pi = std::numbers::pi;
 
-constexpr int fine = 65;
+// Grid hierarchy: 65, 33, 17, 9, 5, 3
+constexpr int finest = 65;
 
 constexpr double min = 0.0;
 constexpr double max = 1.0;
 
 constexpr double weighting = 2.0 / 3.0;
+
+constexpr double residual_tolerance = 1e-8;
 
 // To be used for final verification, assuming u is unknown otherwise
 // u(x,y) = sin(pi.x).sin(pi.y)
@@ -65,14 +70,17 @@ void prolong(const Grid2D &coarse_grid, Grid2D &fine_grid) {
 	}
 }
 
-void weighted_jacobi(Grid2D &u_old, Grid2D &u_new, const Grid2D &f, double d) {
-	std::swap(u_old, u_new);
-	for (int y = 1; y < u_old.ny - 1; y++) {
-		for (int x = 1; x < u_old.nx - 1; x++) {
-			double jacobi_value = (u_old(x + 1, y) + u_old(x - 1, y) + u_old(x, y + 1) +
-			                       u_old(x, y - 1) - d * d * f(x, y)) /
-			                      4.0;
-			u_new(x, y) = (1 - weighting) * u_old(x, y) + weighting * jacobi_value;
+void weighted_jacobi(Grid2D &u, const Grid2D &f, double d, int sweeps) {
+	Grid2D u_old = make_grid2d(u.nx, u.ny);
+	for (int i = 0; i < sweeps; i++) {
+		std::swap(u_old, u);
+		for (int y = 1; y < u_old.ny - 1; y++) {
+			for (int x = 1; x < u_old.nx - 1; x++) {
+				double jacobi_value = (u_old(x + 1, y) + u_old(x - 1, y) + u_old(x, y + 1) +
+				                       u_old(x, y - 1) - d * d * f(x, y)) /
+				                      4.0;
+				u(x, y) = (1 - weighting) * u_old(x, y) + weighting * jacobi_value;
+			}
 		}
 	}
 }
@@ -104,61 +112,71 @@ double abs_max_grid_value(const Grid2D &grid) {
 	}
 	return max_value;
 }
-void two_grid_cycle(Grid2D &u_new, const Grid2D &f, double fine_d) {
-	int fine_n = u_new.nx;
-	int coarse_n = (fine_n + 1) / 2;
-	double coarse_d = 2.0 * fine_d;
-	Grid2D u_old = make_grid2d(fine_n, fine_n);
-	Grid2D fine_residual = make_grid2d(fine_n, fine_n);
-	Grid2D coarse_residual = make_grid2d(coarse_n, coarse_n);
-	Grid2D coarse_correction_old = make_grid2d(coarse_n, coarse_n);
-	Grid2D coarse_correction_new = make_grid2d(coarse_n, coarse_n);
-	Grid2D fine_correction = make_grid2d(fine_n, fine_n);
 
-	calculate_residual(u_new, f, fine_residual, fine_d);
-	std::cout << "Initial cycle max residual: " << abs_max_grid_value(fine_residual) << '\n';
+void v_cycle(Grid2D &u, const Grid2D &f, double d) {
+	int n = u.nx;
 
-	for (int i = 0; i < 3; i++) {
-		weighted_jacobi(u_old, u_new, f, fine_d);
+	if (n == 3) {
+		u(1, 1) = -d * d * f(1, 1) / 4.0;
+		return;
 	}
 
-	calculate_residual(u_new, f, fine_residual, fine_d);
-	std::cout << "After pre-smoothing max residual: " << abs_max_grid_value(fine_residual) << '\n';
+	int coarse_n = (n + 1) / 2;
+
+	Grid2D fine_residual = make_grid2d(n, n);
+	Grid2D coarse_residual = make_grid2d(coarse_n, coarse_n);
+	Grid2D fine_correction = make_grid2d(n, n);
+	Grid2D coarse_correction = make_grid2d(coarse_n, coarse_n);
+
+	// Pre-smoothing
+	weighted_jacobi(u, f, d, 3);
+	// Current residual
+	calculate_residual(u, f, fine_residual, d);
 	restrict(fine_residual, coarse_residual);
 
-	for (int i = 0; i < 1000; i++) {
-		weighted_jacobi(coarse_correction_old, coarse_correction_new, coarse_residual, coarse_d);
-	}
-
-	prolong(coarse_correction_new, fine_correction);
-	for (int y = 1; y < u_new.ny - 1; y++) {
-		for (int x = 1; x < u_new.nx - 1; x++) {
-			u_new(x, y) += fine_correction(x, y);
+	v_cycle(coarse_correction, coarse_residual, 2.0 * d);
+	// Correct for error
+	prolong(coarse_correction, fine_correction);
+	for (int y = 1; y < n - 1; y++) {
+		for (int x = 1; x < n - 1; x++) {
+			u(x, y) += fine_correction(x, y);
 		}
 	}
-	calculate_residual(u_new, f, fine_residual, fine_d);
-	std::cout << "After coarse correction max residual: " << abs_max_grid_value(fine_residual) << '\n';
 
-	for (int i = 0; i < 3; i++) {
-		weighted_jacobi(u_old, u_new, f, fine_d);
-	}
-
-	calculate_residual(u_new, f, fine_residual, fine_d);
-	std::cout << "After post-smoothing max residual: " << abs_max_grid_value(fine_residual) << '\n';
+	// Post-smoothing
+	weighted_jacobi(u, f, d, 3);
 }
 
 int main() {
-	double fine_d = (max - min) / (fine - 1);
-	Grid2D f = make_grid2d(fine, fine);
-	for (int y = 0; y < fine; y++) {
-		for (int x = 0; x < fine; x++) {
-			f(x, y) = exact_laplacian(min + x * fine_d, min + y * fine_d);
+	double d = (max - min) / (finest - 1);
+	Grid2D f = make_grid2d(finest, finest);
+	for (int y = 0; y < finest; y++) {
+		for (int x = 0; x < finest; x++) {
+			f(x, y) = exact_laplacian(min + x * d, min + y * d);
 		}
 	}
 
-	Grid2D u = make_grid2d(fine, fine);
-	for (int i = 1; i <= 10; i++) {
-	    std::cout << "\nCycle: " << i << '\n';
-	    two_grid_cycle(u, f, fine_d);
+	Grid2D u_two_grid = make_grid2d(finest, finest);
+	Grid2D residual_two_grid = make_grid2d(finest, finest);
+	calculate_residual(u_two_grid, f, residual_two_grid, d);
+	double initial_residual_two_grid = abs_max_grid_value(residual_two_grid);
+	double current_residual_two_grid = initial_residual_two_grid;
+
+	Grid2D u_v_cycle = make_grid2d(finest, finest);
+	Grid2D residual_v_cycle = make_grid2d(finest, finest);
+	calculate_residual(u_v_cycle, f, residual_v_cycle, d);
+	double initial_residual_v_cycle = abs_max_grid_value(residual_v_cycle);
+	double current_residual_v_cycle = initial_residual_v_cycle;
+
+	auto start = std::chrono::steady_clock::now();
+	while (current_residual_v_cycle / initial_residual_v_cycle > residual_tolerance) {
+		v_cycle(u_v_cycle, f, d);
+		calculate_residual(u_v_cycle, f, residual_v_cycle, d);
+		current_residual_v_cycle = abs_max_grid_value(residual_v_cycle);
 	}
+	auto end = std::chrono::steady_clock::now();
+	double elapsed = std::chrono::duration<double>(end - start).count();
+
+	std::cout << "Resolved in " << elapsed << " s with max residual "
+	          << current_residual_v_cycle << '\n';
 }
