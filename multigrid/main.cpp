@@ -156,27 +156,32 @@ int main() {
 		}
 	}
 
-	Grid2D u_two_grid = make_grid2d(finest, finest);
-	Grid2D residual_two_grid = make_grid2d(finest, finest);
-	calculate_residual(u_two_grid, f, residual_two_grid, d);
-	double initial_residual_two_grid = abs_max_grid_value(residual_two_grid);
-	double current_residual_two_grid = initial_residual_two_grid;
-
-	Grid2D u_v_cycle = make_grid2d(finest, finest);
-	Grid2D residual_v_cycle = make_grid2d(finest, finest);
-	calculate_residual(u_v_cycle, f, residual_v_cycle, d);
-	double initial_residual_v_cycle = abs_max_grid_value(residual_v_cycle);
-	double current_residual_v_cycle = initial_residual_v_cycle;
+	Grid2D u = make_grid2d(finest, finest);
+	Grid2D residual = make_grid2d(finest, finest);
+	calculate_residual(u, f, residual, d);
+	double initial_residual = abs_max_grid_value(residual);
+	double current_residual = initial_residual;
 
 	auto start = std::chrono::steady_clock::now();
-	while (current_residual_v_cycle / initial_residual_v_cycle > residual_tolerance) {
-		v_cycle(u_v_cycle, f, d);
-		calculate_residual(u_v_cycle, f, residual_v_cycle, d);
-		current_residual_v_cycle = abs_max_grid_value(residual_v_cycle);
+	while (current_residual / initial_residual > residual_tolerance) {
+		v_cycle(u, f, d);
+		calculate_residual(u, f, residual, d);
+		current_residual = abs_max_grid_value(residual);
 	}
 	auto end = std::chrono::steady_clock::now();
 	double elapsed = std::chrono::duration<double>(end - start).count();
 
-	std::cout << "Resolved in " << elapsed << " s with max residual "
-	          << current_residual_v_cycle << '\n';
+	double max_error = 0.0;
+	for (int y = 0; y < u.ny; y++) {
+		for (int x = 0; x < u.nx; x++) {
+			double exact = exact_solution(min + x * d, min + y * d);
+			double error = std::abs(u(x, y) - exact);
+
+			if (error > max_error)
+				max_error = error;
+		}
+	}
+
+	std::cout << "Solved in " << elapsed << "s\nMax residual: " << current_residual
+	          << "\nMax error: " << max_error << '\n';
 }
